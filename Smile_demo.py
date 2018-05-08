@@ -211,44 +211,46 @@ exp_lip_vert_dist = exp_bottomlipT - exp_toplipB
 dif_horiz_corner_dist = exp_corners_dist - cont_corners_dist
 dif_mouth_height_range = exp_mouth_height_range - cont_mouth_height_range
 dif_lip_vert_dist = exp_lip_vert_dist - cont_lip_vert_dist
-#print('Difference in horizontal corner distance: ' + str(dif_horiz_corner_dist)) #positive numbers indicate happiness
-#print('Difference in mouth height range: ' + str(dif_mouth_height_range)) #^^^^^
-#print('Difference in lip vertical distance: ' + str(dif_lip_vert_dist))#^^^^^
+
 
 #Prevents an error if this value is zero
 if cont_lip_vert_dist == 0:
     cont_lip_vert_dist += 1
+if cont_mouth_height_range == 0:
+    cont_mouth_height_range += 1
     
 #converts the change in distance to a percent change value    
 percent_change_corner_dist = (dif_horiz_corner_dist / float(abs(cont_corners_dist))) * 100
 percent_change_mouth_height_range = (dif_mouth_height_range / float(abs(cont_mouth_height_range))) * 100
 percent_change_lip_vert_dist = (dif_lip_vert_dist / float(abs(cont_lip_vert_dist))) * 100
 
-print('The distance between the corners of the mouth increased by' + str(percent_change_corner_dist) + '%')
-print('The distance between the top of the corners of the mouth and the bottom of the lips increased by' + str(percent_change_mouth_height_range) + '%')
-print('The distance between the lips increased by' + str(percent_change_lip_vert_dist) + '%')
+print('The distance between the corners of the mouth increased by ' + str(percent_change_corner_dist) + '%')
+print('The distance between the top of the corners of the mouth and the bottom of the lips increased by ' + str(percent_change_mouth_height_range) + '%')
+print('The distance between the lips increased by ' + str(percent_change_lip_vert_dist) + '%')
 
 #These are the "rules" for what constitutes a smile. Each one that is met adds 1 to i. The final value of i determines if the person is smiling.
 i=0
-if percent_change_corner_dist > 25:
+if percent_change_corner_dist > 18:
     i+=1
 
-if percent_change_mouth_height_range > 45:
+if percent_change_mouth_height_range > 250:
     i+=1
 
 if percent_change_lip_vert_dist > 450:
     i+=1
 
+if percent_change_lip_vert_dist > 1800:
+    i-=1
+
 cv2.putText(exp_image, 'Smile Probability: ' + str(i), (330, 17), 0, .5, (0, 255, 0), 2)
 cv2.imshow('Final Image', exp_image)
 if i==3:
-    print ("This person is almost definitely smiling.")
+    print ("This person appears to be smiling")
 elif i==2:
-    print ("This person is likely smiling")
-elif i==1:
-    print ("This person is likely not smiling")
-elif i==0:
-    print ("This person is almost definitely not smiling")
+    print ("This person appears to be smiling slightly")
+elif i<=1:
+    print ("This person does not appear to be smiling")
+  
     
     
 cv2.waitKey(0)

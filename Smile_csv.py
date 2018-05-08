@@ -164,16 +164,16 @@ def find_smile(cont, exp, p, m):
 
     #These are the "rules" for what constitutes a smile. Each one that is met adds 1 to i. The final value of i determines if the person is smiling.
     i=0
-    if percent_change_corner_dist > 10:
+    if percent_change_corner_dist > 18:
         i+=1
 
-    if percent_change_mouth_height_range > 45:
+    if percent_change_mouth_height_range > 250:
         i+=1
 
     if percent_change_lip_vert_dist > 450:
         i+=1
 
-    if percent_change_lip_vert_dist > 2000:
+    if percent_change_lip_vert_dist > 1800:
         i-=1
 
     

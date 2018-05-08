@@ -6,7 +6,6 @@ import time
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 import os
-import matplotlib.pyplot as plt
 
 def cont_shape_to_np(control_shape, dtype="int"):
     coords = np.zeros((68, 2), dtype=dtype)
@@ -218,26 +217,26 @@ print('Mouth height range %:' + str(percent_change_mouth_height_range))
 print('Lip vert dist %:' + str(percent_change_lip_vert_dist))
 
 i=0
-if percent_change_corner_dist > 25:
+if percent_change_corner_dist > 18:
     i+=1
 
-if percent_change_mouth_height_range > 45:
+if percent_change_mouth_height_range > 250:
     i+=1
 
 if percent_change_lip_vert_dist > 450:
     i+=1
 
+if percent_change_lip_vert_dist > 1800:
+    i-=1
+    
 cv2.putText(exp_image, 'Smile Probability: ' + str(i), (330, 17), 0, .5, (0, 255, 0), 2)
 cv2.imshow('Final Image', exp_image)
 if i==3:
-    print ("This person is almost definitely smiling.")
+    print ("This person appears to be smiling")
 elif i==2:
-    print ("This person is likely smiling")
-elif i==1:
-    print ("This person is likely not smiling")
-elif i==0:
-    print ("This person is almost definitely not smiling")
-    
+    print ("This person appears to be smiling slightly")
+elif i<=1:
+    print ("This person does not appear to be smiling")    
     
 cv2.waitKey(0)
 cv2.destroyAllWindows()
